@@ -154,8 +154,6 @@ O sistema deve registrar a forma de pagamento selecionada pelo cliente e o respe
 
 ---
 
-# 10. Observações
-
 Este documento representa a especificação de requisitos adotada para o desenvolvimento do MVP do Cupcake Ordering System no Projeto Integrador Transdisciplinar II.
 
 Os requisitos poderão ser refinados durante as etapas de modelagem, desenvolvimento e testes, desde que as alterações sejam documentadas e permaneçam coerentes com o objetivo e o escopo do projeto.
