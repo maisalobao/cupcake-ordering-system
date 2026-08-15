@@ -1,4 +1,4 @@
-# Cupcake App — PI II
+# Cupcake Ordering System — PI II
 
 Projeto desenvolvido para a disciplina de **Projeto Integrador Transdisciplinar II em Engenharia de Software**.
 
