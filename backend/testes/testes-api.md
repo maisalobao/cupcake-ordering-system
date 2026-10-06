@@ -1,5 +1,12 @@
 ## Testes de API
 
+Este documento apresenta as evidências dos testes realizados na API do
+Cupcake Ordering System. Os testes foram executados utilizando o Swagger
+da aplicação e tiveram como objetivo verificar o funcionamento dos
+principais endpoints do backend e a persistência dos dados no banco de dados.
+
+Todos os testes apresentados como `PASSOU` foram executados com sucesso.
+
 ### Criação do banco de dados
 ![Conexão API](EV02-criacao_database.png)
 
@@ -58,7 +65,7 @@ Status: ✅ PASSOU
 Endpoint: GET /pedidos/{id_pedido}
 
 Status: ✅ PASSOU
-![TC09 — Buscar usuário](TC09-buscar-pedido.png)
+![TC09 — Buscar pedido](TC09-buscar-pedido.png)
 
 ### TC10 — Listar Pedidos Usuário
 Endpoint: GET /pedidos/usuario/{id_usuario}
@@ -73,7 +80,7 @@ Status: ✅ PASSOU
 ![TC11 — Listar todos pedidos](TC11-pedidos-admin.png)
 
 ### TC12 — Atualizar Status
-Endpoint: PATCH /{id_pedido}/status
+Endpoint: PATCH /pedidos/{id_pedido}/status
 
 Status: ✅ PASSOU
 ![TC12 — Atualizar pedidos](TC12-atualizar-status.png)
