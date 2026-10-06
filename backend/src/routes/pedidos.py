@@ -15,8 +15,7 @@ router = APIRouter(
 
 @router.post("/", response_model=PedidoResponse, status_code=201)
 def criar_pedido(
-    dados: PedidoCreate,
-    itens: list[ItemPedidoCreate],
+    dados: PedidoCreateCompleto,
     db: Session = Depends(get_db)
 ):
     try:
