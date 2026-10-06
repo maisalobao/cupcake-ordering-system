@@ -7,24 +7,23 @@ from src.models.pedido import Pedido
 from src.models.produto import Produto
 from src.repositories.pedido_repository import PedidoRepository
 from src.schemas.item_pedido import ItemPedidoCreate
-from src.schemas.pedido import PedidoCreate
+from src.schemas.pedido import PedidoCreateCompleto
 
 
 class PedidoService:
 
     @staticmethod
-    @staticmethod
     def criar_pedido(
         db: Session,
         dados: PedidoCreateCompleto
     ):
-        if not itens:
+        if not dados.itens:
             raise ValueError("Não é possível criar um pedido sem itens.")
 
         valor_total = Decimal("0.00")
         itens_pedido = []
 
-        for item in itens:
+        for item in dados.itens:
             if item.quantidade <= 0:
                 raise ValueError(
                     "A quantidade do item deve ser maior que zero."
