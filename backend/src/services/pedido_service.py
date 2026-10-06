@@ -2,11 +2,12 @@ from decimal import Decimal
 
 from sqlalchemy.orm import Session
 
+from src.models.endereco_entrega import EnderecoEntrega
 from src.models.item_pedido import ItemPedido
+from src.models.pagamento import Pagamento
 from src.models.pedido import Pedido
 from src.models.produto import Produto
 from src.repositories.pedido_repository import PedidoRepository
-from src.schemas.item_pedido import ItemPedidoCreate
 from src.schemas.pedido import PedidoCreateCompleto
 
 
@@ -69,6 +70,26 @@ class PedidoService:
         for item_pedido in itens_pedido:
             item_pedido.id_pedido = pedido.id_pedido
             db.add(item_pedido)
+
+        endereco = EnderecoEntrega(
+            id_pedido=pedido.id_pedido,
+            logradouro=dados.endereco.logradouro,
+            numero=dados.endereco.numero,
+            complemento=dados.endereco.complemento,
+            bairro=dados.endereco.bairro,
+            cidade=dados.endereco.cidade,
+            estado=dados.endereco.estado,
+            cep=dados.endereco.cep
+        )
+
+        pagamento = Pagamento(
+            id_pedido=pedido.id_pedido,
+            forma_pagamento=dados.pagamento.forma_pagamento,
+            status="PENDENTE"
+        )
+
+        db.add(endereco)
+        db.add(pagamento)
 
         db.commit()
         db.refresh(pedido)
