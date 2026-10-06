@@ -6,8 +6,6 @@
 ### Conexão com a API realizada
 ![Conexão API](EV01-conexao_api_realizada.png)
 
-![Swagger API Rest](EV03-swagger_api_rest.png)
-
 ### TC01 — Listar Produtos
 Endpoint: GET /produtos/
 
