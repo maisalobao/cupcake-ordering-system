@@ -79,3 +79,18 @@ Endpoint: PATCH /{id_pedido}/status
 
 Status: ✅ PASSOU
 ![TC12 — Atualizar pedidos](TC12-atualizar-status.png)
+
+### C01 — Consulta tabela de pedidos
+![C01-pedidos](C01-pedidos.png)
+
+### C02 — Consulta tabela de endereço de entrega
+![C02-endereco_entrega](C02-endereco_entrega.png)
+
+### C03 — Consulta tabela de itens do pedido
+![C03-item_pedido](C03-item_pedido.png)
+
+### C04 — Consulta tabela de pagamentos
+![C04-pagamento](C04-pagamento.png)
+
+### C05 — Consulta tabela de produtos
+![C05-produto](C05-produto.png)
