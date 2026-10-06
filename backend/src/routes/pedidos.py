@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from src.config.database import get_db
 from src.schemas.item_pedido import ItemPedidoCreate
-from src.schemas.pedido import PedidoCreate, PedidoResponse
+from src.schemas.pedido import PedidoCreateCompleto, PedidoResponse
 from src.services.pedido_service import PedidoService
 
 
@@ -21,8 +21,7 @@ def criar_pedido(
     try:
         return PedidoService.criar_pedido(
             db,
-            dados,
-            itens
+            dados
         )
     except ValueError as erro:
         raise HTTPException(
