@@ -13,10 +13,10 @@ from src.schemas.pedido import PedidoCreate
 class PedidoService:
 
     @staticmethod
+    @staticmethod
     def criar_pedido(
         db: Session,
-        dados: PedidoCreate,
-        itens: list[ItemPedidoCreate]
+        dados: PedidoCreateCompleto
     ):
         if not itens:
             raise ValueError("Não é possível criar um pedido sem itens.")
