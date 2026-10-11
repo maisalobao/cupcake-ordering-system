@@ -138,3 +138,98 @@ class PedidoService:
         pedido.status = novo_status
 
         return PedidoRepository.atualizar(db, pedido)
+
+    @staticmethod
+    def buscar_detalhes(db: Session, id_pedido: int):
+        resultado = PedidoRepository.buscar_detalhes(
+            db,
+            id_pedido
+        )
+
+        if not resultado:
+            raise ValueError("Pedido não encontrado.")
+
+        pedido = resultado["pedido"]
+        itens = resultado["itens"]
+        endereco = resultado["endereco"]
+        pagamento = resultado["pagamento"]
+
+        if not endereco:
+            raise ValueError(
+                "Endereço de entrega não encontrado."
+            )
+
+        if not pagamento:
+            raise ValueError(
+                "Pagamento não encontrado."
+            )
+
+        itens_detalhes = []
+
+        for item_pedido, produto in itens:
+            itens_detalhes.append({
+                "id_produto": item_pedido.id_produto,
+                "nome_produto": produto.nome,
+                "quantidade": item_pedido.quantidade,
+                "preco_unitario": item_pedido.preco_unitario,
+                "subtotal": item_pedido.subtotal
+            })
+
+        return {
+            "id_pedido": pedido.id_pedido,
+            "id_usuario": pedido.id_usuario,
+            "valor_total": pedido.valor_total,
+            "status": pedido.status,
+            "itens": itens_detalhes,
+            "endereco": {
+                "logradouro": endereco.logradouro,
+                "numero": endereco.numero,
+                "complemento": endereco.complemento,
+                "bairro": endereco.bairro,
+                "cidade": endereco.cidade,
+                "estado": endereco.estado,
+                "cep": endereco.cep
+            },
+            "pagamento": {
+                "forma_pagamento": pagamento.forma_pagamento,
+                "status": pagamento.status
+            }
+        }
+
+    
+    @staticmethod
+    def atualizar_status_pagamento(
+        db: Session,
+        id_pedido: int,
+        novo_status: str
+    ):
+        status_validos = {"APROVADO", "CANCELADO"}
+
+        if novo_status not in status_validos:
+            raise ValueError(
+                "Status de pagamento inválido. "
+                "Use APROVADO ou CANCELADO."
+            )
+
+        pagamento = (
+            db.query(Pagamento)
+            .filter(Pagamento.id_pedido == id_pedido)
+            .first()
+        )
+
+        if not pagamento:
+            raise ValueError(
+                "Pagamento não encontrado para este pedido."
+            )
+
+        if pagamento.status != "PENDENTE":
+            raise ValueError(
+                "Só é possível alterar pagamentos pendentes."
+            )
+
+        pagamento.status = novo_status
+
+        db.commit()
+        db.refresh(pagamento)
+
+        return pagamento

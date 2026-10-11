@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 
 from src.models.produto import Produto
 from src.repositories.produto_repository import ProdutoRepository
-from src.schemas.produto import ProdutoCreate
+from src.schemas.produto import ProdutoCreate, ProdutoUpdate
 
 
 class ProdutoService:
@@ -35,6 +35,24 @@ class ProdutoService:
         )
 
         return ProdutoRepository.criar(db, produto)
+
+    @staticmethod
+    def editar_produto(
+        db: Session,
+        id_produto: int,
+        dados: ProdutoUpdate
+    ):
+        produto = ProdutoRepository.buscar_por_id(db, id_produto)
+
+        if not produto:
+            raise ValueError("Produto não encontrado.")
+
+        produto.nome = dados.nome
+        produto.descricao = dados.descricao
+        produto.preco = dados.preco
+        produto.imagem_url = dados.imagem_url
+
+        return ProdutoRepository.atualizar(db, produto)
 
     @staticmethod
     def desativar_produto(db: Session, id_produto: int):
