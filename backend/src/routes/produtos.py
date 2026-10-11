@@ -2,7 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from src.config.database import get_db
-from src.schemas.produto import ProdutoCreate, ProdutoResponse
+from src.schemas.produto import (
+    ProdutoCreate,
+    ProdutoResponse,
+    ProdutoUpdate
+)
 from src.services.produto_service import ProdutoService
 
 
@@ -15,6 +19,24 @@ router = APIRouter(
 @router.get("/", response_model=list[ProdutoResponse])
 def listar_produtos(db: Session = Depends(get_db)):
     return ProdutoService.listar_catalogo(db)
+
+@router.put("/{id_produto}", response_model=ProdutoResponse)
+def editar_produto(
+    id_produto: int,
+    dados: ProdutoUpdate,
+    db: Session = Depends(get_db)
+):
+    try:
+        return ProdutoService.editar_produto(
+            db,
+            id_produto,
+            dados
+        )
+    except ValueError as erro:
+        raise HTTPException(
+            status_code=404,
+            detail=str(erro)
+        )
 
 
 @router.get("/{id_produto}", response_model=ProdutoResponse)

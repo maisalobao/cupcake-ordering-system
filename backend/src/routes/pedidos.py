@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from src.config.database import get_db
-from src.schemas.item_pedido import ItemPedidoCreate
 from src.schemas.pedido import PedidoCreateCompleto, PedidoResponse
+from src.schemas.pedido import PedidoCreateCompleto, PedidoResponse
+from src.schemas.pedido_detalhes import PedidoDetalhesResponse
 from src.services.pedido_service import PedidoService
 
 
@@ -26,6 +27,26 @@ def criar_pedido(
     except ValueError as erro:
         raise HTTPException(
             status_code=400,
+            detail=str(erro)
+        )
+
+
+@router.get(
+    "/{id_pedido}/detalhes",
+    response_model=PedidoDetalhesResponse
+)
+def buscar_detalhes_pedido(
+    id_pedido: int,
+    db: Session = Depends(get_db)
+):
+    try:
+        return PedidoService.buscar_detalhes(
+            db,
+            id_pedido
+        )
+    except ValueError as erro:
+        raise HTTPException(
+            status_code=404,
             detail=str(erro)
         )
 
@@ -77,6 +98,32 @@ def atualizar_status(
             id_pedido,
             novo_status
         )
+    except ValueError as erro:
+        raise HTTPException(
+            status_code=400,
+            detail=str(erro)
+        )
+
+
+@router.patch("/{id_pedido}/pagamento")
+def atualizar_status_pagamento(
+    id_pedido: int,
+    novo_status: str,
+    db: Session = Depends(get_db)
+):
+    try:
+        pagamento = PedidoService.atualizar_status_pagamento(
+            db,
+            id_pedido,
+            novo_status
+        )
+
+        return {
+            "id_pedido": pagamento.id_pedido,
+            "forma_pagamento": pagamento.forma_pagamento,
+            "status": pagamento.status
+        }
+
     except ValueError as erro:
         raise HTTPException(
             status_code=400,
