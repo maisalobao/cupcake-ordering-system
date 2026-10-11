@@ -14,6 +14,11 @@ class ProdutoBase(BaseModel):
 class ProdutoCreate(ProdutoBase):
     pass
 
+class ProdutoUpdate(BaseModel):
+    nome: str
+    descricao: str | None = None
+    preco: Decimal
+    imagem_url: str | None = None
 
 class ProdutoResponse(ProdutoBase):
     id_produto: int
