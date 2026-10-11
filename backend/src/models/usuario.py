@@ -1,4 +1,4 @@
-from sqlalchemy import DateTime, Enum, Integer, String
+from sqlalchemy import Column, DateTime, Integer, String, Enum, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.config.database import Base
@@ -35,7 +35,8 @@ class Usuario(Base):
         default="CLIENTE"
     )
 
-    criado_em: Mapped[DateTime] = mapped_column(
+    criado_em = Column(
         DateTime,
-        nullable=False
+        nullable=False,
+        server_default=func.current_timestamp()
     )

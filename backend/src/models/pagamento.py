@@ -1,4 +1,4 @@
-from sqlalchemy import DateTime, Enum, ForeignKey, Integer
+from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.config.database import Base
@@ -31,12 +31,15 @@ class Pagamento(Base):
         default="PENDENTE"
     )
 
-    criado_em: Mapped[DateTime] = mapped_column(
+    criado_em = Column(
         DateTime,
-        nullable=False
+        nullable=False,
+        server_default=func.current_timestamp()
     )
 
-    atualizado_em: Mapped[DateTime] = mapped_column(
+    atualizado_em = Column(
         DateTime,
-        nullable=False
+        nullable=False,
+        server_default=func.current_timestamp(),
+        server_onupdate=func.current_timestamp()
     )
