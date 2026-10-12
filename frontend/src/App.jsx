@@ -119,8 +119,21 @@ function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>Cupcake Ordering System</h1>
-        <p>Escolha seus cupcakes favoritos!</p>
+        <div className="marca">
+          <img
+            src="/capybara.png"
+            alt="Capivara confeiteira da Capycakes"
+            className="marca-mascote"
+          />
+
+          <div>
+            <h1>Capycakes</h1>
+            <h3>Um cupcake, um carinho.</h3>
+            <p>
+              Escolha seu favorito. A gente cuida do resto.
+            </p>
+          </div>
+        </div>
 
         <nav>
           <button
