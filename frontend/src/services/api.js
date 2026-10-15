@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000'
+const API_URL = 'https://capycakes-api.onrender.com'
 
 export async function listarProdutos() {
   const resposta = await fetch(`${API_URL}/produtos/`)
