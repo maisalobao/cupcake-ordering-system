@@ -1,4 +1,6 @@
+
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.routes import pedidos, produtos, usuarios
 
@@ -9,6 +11,16 @@ app = FastAPI(
     version="1.0.0"
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        # Adicionaremos aqui a URL pública do frontend.
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(produtos.router)
 app.include_router(usuarios.router)
