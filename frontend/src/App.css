@@ -498,6 +498,110 @@
     text-align: right;
   }
 
+  
+/* Tela de dados de entrega */
+.endereco-entrega {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #fffdf9;
+  border: 1px solid #f0dfd2;
+  border-radius: 20px;
+  box-shadow: 0 4px 14px rgb(75 51 43 / 7%);
+}
+
+.entrega-cabecalho {
+  margin-bottom: 1.8rem;
+}
+
+.entrega-cabecalho h2 {
+  margin: 0 0 0.5rem;
+  color: #8c5e4a;
+  font-size: 1.8rem;
+}
+
+.entrega-cabecalho p {
+  margin: 0;
+  color: #806e65;
+  line-height: 1.5;
+}
+
+.formulario-entrega {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.formulario-entrega label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: #5d453b;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.formulario-entrega .campo-logradouro {
+  grid-column: 1 / -1;
+}
+
+.formulario-entrega input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid #dfcec3;
+  border-radius: 10px;
+  outline: none;
+  background: #fff;
+  color: #4b332b;
+  font: inherit;
+  font-weight: 400;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.formulario-entrega input::placeholder {
+  color: #b4a49b;
+}
+
+.formulario-entrega input:focus {
+  border-color: #8c5e4a;
+  box-shadow: 0 0 0 3px rgb(140 94 74 / 12%);
+}
+
+.campo-opcional {
+  color: #9b8a80;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.entrega-acoes {
+  margin-top: 1.8rem;
+}
+
+.entrega-acoes .botao-continuar-entrega {
+  max-width: 100%;
+}
+
+@media (max-width: 600px) {
+  .endereco-entrega {
+    padding: 1.25rem;
+  }
+
+  .formulario-entrega {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .formulario-entrega .campo-logradouro {
+    grid-column: auto;
+  }
+
+  .entrega-cabecalho h2 {
+    font-size: 1.5rem;
+  }
+}
+
   .resumo-carrinho {
     padding: 1rem;
   }
