@@ -1,7 +1,19 @@
+
+import { useState } from 'react'
 import { useCarrinho } from '../context/CarrinhoContext'
 
 function ProdutoCard({ produto, onVerDetalhes }) {
   const { adicionarAoCarrinho } = useCarrinho()
+  const [adicionado, setAdicionado] = useState(false)
+
+  function handleAdicionarAoCarrinho() {
+    adicionarAoCarrinho(produto)
+    setAdicionado(true)
+
+    setTimeout(() => {
+      setAdicionado(false)
+    }, 2000)
+  }
 
   return (
     <div className="produto">
@@ -31,14 +43,18 @@ function ProdutoCard({ produto, onVerDetalhes }) {
 
         <button
           type="button"
-          onClick={() => {
-            console.log('CLIQUEI NO BOTÃO')
-            adicionarAoCarrinho(produto)
-          }}
+          onClick={handleAdicionarAoCarrinho}
+          className={adicionado ? 'botao-adicionado' : ''}
         >
-          Adicionar ao carrinho
+          {adicionado ? '✓ Adicionado!' : 'Adicionar ao carrinho'}
         </button>
       </div>
+
+      {adicionado && (
+        <p className="mensagem-adicionado" aria-live="polite">
+          ✓ Produto adicionado ao carrinho!
+        </p>
+      )}
     </div>
   )
 }
