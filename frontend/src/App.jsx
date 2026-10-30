@@ -17,6 +17,11 @@ import './App.css'
 function App() {
   const { itens } = useCarrinho()
 
+  const quantidadeCarrinho = itens.reduce(
+    (total, item) => total + item.quantidade,
+    0
+  )
+
   const [produtos, setProdutos] = useState([])
   const [produtoSelecionado, setProdutoSelecionado] = useState(null)
   const [tela, setTela] = useState('catalogo')
@@ -118,6 +123,7 @@ function App() {
 
   return (
     <div className="app">
+      
       <header className="header">
         <div className="marca">
           <img
@@ -125,19 +131,18 @@ function App() {
             alt="Capivara confeiteira da Capycakes"
             className="marca-mascote"
           />
-
+      
           <div>
             <h1>Capycakes</h1>
             <h3>Um cupcake, um carinho.</h3>
-            <p>
-              Escolha seu favorito. A gente cuida do resto.
-            </p>
+            <p>Escolha seu favorito. A gente cuida do resto.</p>
           </div>
         </div>
-
-        <nav>
+      
+        <nav className="menu-principal">
           <button
             type="button"
+            className={tela === 'catalogo' ? 'menu-ativo' : ''}
             onClick={() => {
               setTela('catalogo')
               setProdutoSelecionado(null)
@@ -145,30 +150,36 @@ function App() {
           >
             Catálogo
           </button>
-
+      
           <button
             type="button"
+            className={tela === 'carrinho' ? 'menu-ativo' : ''}
             onClick={() => {
               setTela('carrinho')
               setProdutoSelecionado(null)
             }}
           >
             🛒 Carrinho
+            <span className="contador-carrinho">
+              {quantidadeCarrinho}
+            </span>
+          </button>
+      
+          <button
+            type="button"
+            className={tela === 'status' ? 'menu-ativo' : ''}
+            onClick={() => {
+              setTela('status')
+              setProdutoSelecionado(null)
+            }}
+          >
+            Consultar pedido
           </button>
         </nav>
-
+      
         <button
           type="button"
-          onClick={() => {
-            setTela('status')
-            setProdutoSelecionado(null)
-          }}
-        >
-          Consultar pedido
-        </button>
-
-        <button
-          type="button"
+          className="botao-administracao"
           onClick={() => {
             setTela('pedidos-admin')
             setProdutoSelecionado(null)
@@ -177,7 +188,7 @@ function App() {
           Administração
         </button>
       </header>
-
+      
       <main>
         {carregando && <p>Carregando produtos...</p>}
 
