@@ -206,3 +206,39 @@
     padding: 1.25rem;
   }
 }
+
+
+/* Feedback de produto adicionado ao carrinho */
+.produto-acoes button.botao-adicionado {
+  background: #b8d8ba;
+  color: #315b35;
+}
+
+.produto-acoes button.botao-adicionado:hover {
+  background: #a4cba7;
+}
+
+.mensagem-adicionado {
+  margin: 0.75rem 0 0;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background: #edf7ed;
+  color: #315b35;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+  animation: aparecerMensagem 0.2s ease-in-out;
+}
+
+@keyframes aparecerMensagem {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
