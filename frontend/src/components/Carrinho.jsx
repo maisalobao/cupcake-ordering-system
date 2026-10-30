@@ -10,83 +10,110 @@ function Carrinho({ onContinuar }) {
   if (itens.length === 0) {
     return (
       <section className="carrinho">
-        <h2>Seu carrinho</h2>
-        <p>Seu carrinho está vazio.</p>
+        <h2>Seu carrinho 🛒</h2>
+        <div className="carrinho-vazio">
+          <span>🧁</span>
+          <h3>Seu carrinho está vazio!</h3>
+          <p>Que tal escolher alguns cupcakes deliciosos?</p>
+        </div>
       </section>
     )
   }
 
   const total = itens.reduce(
-    (soma, item) =>
-      soma + Number(item.preco) * item.quantidade,
+    (soma, item) => soma + Number(item.preco) * item.quantidade,
     0
   )
 
   return (
     <section className="carrinho">
-      <h2>Seu carrinho</h2>
+      <h2>Seu carrinho 🛒</h2>
+      <p className="carrinho-subtitulo">
+        Confira seus produtos antes de continuar.
+      </p>
 
-      {itens.map((item) => (
-        <div className="item-carrinho" key={item.id_produto}>
-          <h3>{item.nome}</h3>
+      <div className="lista-itens-carrinho">
+        {itens.map((item) => (
+          <div className="item-carrinho" key={item.id_produto}>
+            {item.imagem_url && (
+              <img
+                src={item.imagem_url}
+                alt={item.nome}
+                className="item-carrinho-imagem"
+              />
+            )}
 
-          <p>
-            Preço unitário: R$ {Number(item.preco).toFixed(2)}
-          </p>
+            <div className="item-carrinho-info">
+              <h3>{item.nome}</h3>
 
-          <p>
-            Subtotal: R$ {(Number(item.preco) * item.quantidade).toFixed(2)}
-          </p>
+              <p className="item-preco">
+                R$ {Number(item.preco).toFixed(2)}
+              </p>
 
-          <div>
-            <button
-              type="button"
-              onClick={() =>
-                alterarQuantidade(
-                  item.id_produto,
-                  item.quantidade - 1
-                )
-              }
-            >
-              −
-            </button>
+              <div className="item-carrinho-acoes">
+                <div className="controle-quantidade">
+                  <button
+                    type="button"
+                    aria-label={`Diminuir quantidade de ${item.nome}`}
+                    disabled={item.quantidade <= 1}
+                    onClick={() =>
+                      alterarQuantidade(
+                        item.id_produto,
+                        item.quantidade - 1
+                      )
+                    }
+                  >
+                    −
+                  </button>
 
-            <span>{item.quantidade}</span>
+                  <span>{item.quantidade}</span>
 
-            <button
-              type="button"
-              onClick={() =>
-                alterarQuantidade(
-                  item.id_produto,
-                  item.quantidade + 1
-                )
-              }
-            >
-              +
-            </button>
+                  <button
+                    type="button"
+                    aria-label={`Aumentar quantidade de ${item.nome}`}
+                    onClick={() =>
+                      alterarQuantidade(
+                        item.id_produto,
+                        item.quantidade + 1
+                      )
+                    }
+                  >
+                    +
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  className="botao-remover"
+                  onClick={() => removerDoCarrinho(item.id_produto)}
+                  aria-label={`Remover ${item.nome} do carrinho`}
+                >
+                  🗑 Remover
+                </button>
+              </div>
+            </div>
+
+            <strong className="item-subtotal">
+              R$ {(Number(item.preco) * item.quantidade).toFixed(2)}
+            </strong>
           </div>
-
-          <button
-            type="button"
-            onClick={() => removerDoCarrinho(item.id_produto)}
-          >
-            Remover
-          </button>
-        </div>
-      ))}
-
-      <div className="carrinho-total">
-        <h3>
-          Total: R$ {total.toFixed(2)}
-        </h3>
+        ))}
       </div>
 
-      <button
-        type="button"
-        onClick={() => onContinuar()}
-      >
-        Continuar para entrega
-      </button>
+      <div className="resumo-carrinho">
+        <div className="resumo-total">
+          <span>Total do pedido</span>
+          <strong>R$ {total.toFixed(2)}</strong>
+        </div>
+
+        <button
+          type="button"
+          className="botao-continuar-entrega"
+          onClick={onContinuar}
+        >
+          Seguir para entrega →
+        </button>
+      </div>
     </section>
   )
 }
