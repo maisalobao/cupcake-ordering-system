@@ -124,22 +124,35 @@ function App() {
   return (
     <div className="app">
       
-      <header className="header">
-        <div className="marca">
-          <img
-            src="/capybara.png"
-            alt="Capivara confeiteira da Capycakes"
-            className="marca-mascote"
-          />
       
-          <div>
-            <h1>Capycakes</h1>
-            <h3>Um cupcake, um carinho.</h3>
-            <p>Escolha seu favorito. A gente cuida do resto.</p>
-          </div>
-        </div>
-      
-        <nav className="menu-principal">
+<header className="header">
+  <div className="marca">
+    <img
+      src="/capybara.png"
+      alt="Capivara confeiteira da Capycakes"
+      className="marca-mascote"
+    />
+
+    <div>
+      <h1>Capycakes</h1>
+      <h3>Um cupcake, um carinho.</h3>
+      <p>Escolha seu favorito. A gente cuida do resto.</p>
+    </div>
+  </div>
+
+  <button
+    type="button"
+    className="botao-administracao"
+    onClick={() => {
+      setTela('pedidos-admin')
+      setProdutoSelecionado(null)
+    }}
+  >
+    Administração
+  </button>
+        </header>
+        
+        <nav className="menu-inferior">
           <button
             type="button"
             className={tela === 'catalogo' ? 'menu-ativo' : ''}
@@ -148,9 +161,10 @@ function App() {
               setProdutoSelecionado(null)
             }}
           >
+            <span>🧁</span>
             Catálogo
           </button>
-      
+        
           <button
             type="button"
             className={tela === 'carrinho' ? 'menu-ativo' : ''}
@@ -159,12 +173,13 @@ function App() {
               setProdutoSelecionado(null)
             }}
           >
-            🛒 Carrinho
+            <span>🛒</span>
+            Carrinho
             <span className="contador-carrinho">
               {quantidadeCarrinho}
             </span>
           </button>
-      
+        
           <button
             type="button"
             className={tela === 'status' ? 'menu-ativo' : ''}
@@ -173,21 +188,10 @@ function App() {
               setProdutoSelecionado(null)
             }}
           >
-            Consultar pedido
+            <span>📦</span>
+            Pedidos
           </button>
         </nav>
-      
-        <button
-          type="button"
-          className="botao-administracao"
-          onClick={() => {
-            setTela('pedidos-admin')
-            setProdutoSelecionado(null)
-          }}
-        >
-          Administração
-        </button>
-      </header>
       
       <main>
         {carregando && <p>Carregando produtos...</p>}
