@@ -242,34 +242,21 @@
   }
 }
 
-
-/* Cabeçalho: permanece no fluxo normal da página */
-.header {
-  position: static;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  text-align: center;
-  margin-bottom: 2.5rem;
-  padding: 2rem 1.5rem;
-  background: #f3c6d3;
-  border-radius: 24px;
-}
-
-/* Menu fixo na parte inferior da tela */
-.menu-inferior {
+.app nav.menu-inferior {
   position: fixed;
   bottom: 0;
   left: 0;
-  z-index: 1000;
+  right: 0;
+  z-index: 9999;
 
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: nowrap;
   gap: 1rem;
 
   width: 100%;
+  margin: 0;
   padding: 0.7rem 1rem;
 
   background: #f3c6d3;
@@ -277,65 +264,38 @@
   border-radius: 18px 18px 0 0;
 }
 
-.menu-inferior button {
+.app nav.menu-inferior button {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-
   padding: 0.65rem 1.2rem;
   border: 2px solid transparent;
   border-radius: 999px;
-
   background: #b8d8ba;
   color: #4b332b;
   font-weight: 700;
-
-  transition: background 0.2s, transform 0.2s;
 }
 
-.menu-inferior button:hover,
-.menu-inferior button.menu-ativo {
+.app nav.menu-inferior button:hover,
+.app nav.menu-inferior button.menu-ativo {
   background: #a4cba7;
   border-color: #6c8f68;
 }
 
-.contador-carrinho {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 22px;
-  height: 22px;
-  padding: 0 5px;
-  border-radius: 50%;
-  background: #8c5e4a;
-  color: white;
-  font-size: 0.8rem;
-}
-
-/* Evita que o menu cubra o conteúdo no final da página */
 .app {
   padding-bottom: 6rem;
 }
 
-/* Ajustes para celular */
 @media (max-width: 600px) {
-  .header {
-    flex-direction: column;
-    padding: 1.5rem 1rem;
-  }
-
-  .menu-inferior {
+  .app nav.menu-inferior {
     gap: 0.3rem;
     padding: 0.65rem 0.4rem;
   }
 
-  .menu-inferior button {
+  .app nav.menu-inferior button {
     flex: 1;
-    gap: 0.25rem;
     padding: 0.65rem 0.35rem;
     font-size: 0.8rem;
   }
 }
-
-
