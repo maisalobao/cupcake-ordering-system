@@ -9,6 +9,8 @@ from src.models.pedido import Pedido
 from src.models.produto import Produto
 from src.repositories.pedido_repository import PedidoRepository
 from src.schemas.pedido import PedidoCreateCompleto
+from src.models.usuario import Usuario
+from src.repositories.usuario_repository import UsuarioRepository
 
 
 class PedidoService:
@@ -58,8 +60,30 @@ class PedidoService:
                 )
             )
 
+        # Normaliza o e-mail para evitar cadastros duplicados
+        email = dados.cliente.email.strip().lower()
+        nome = dados.cliente.nome.strip()
+
+        if not nome:
+            raise ValueError("O nome do cliente é obrigatório.")
+
+        # Busca o cliente pelo e-mail
+        usuario = UsuarioRepository.buscar_por_email(db, email)
+
+        # Se não existir, cadastra um novo cliente
+        if not usuario:
+            usuario = Usuario(
+                nome=nome,
+                email=email,
+                senha=None,
+                tipo="CLIENTE"
+            )
+
+            db.add(usuario)
+            db.flush()
+
         pedido = Pedido(
-            id_usuario=dados.id_usuario,
+            id_usuario=usuario.id_usuario,
             valor_total=valor_total,
             status="RECEBIDO"
         )
