@@ -1,9 +1,15 @@
+from decimal import Decimal
+
+from pydantic import BaseModel, ConfigDict, EmailStr
+
 from src.schemas.item_pedido import ItemPedidoCreate
 from src.schemas.endereco_entrega import EnderecoEntregaCreate
 from src.schemas.pagamento import PagamentoCreate
-from decimal import Decimal
 
-from pydantic import BaseModel, ConfigDict
+
+class ClienteCheckout(BaseModel):
+    nome: str
+    email: EmailStr
 
 
 class PedidoBase(BaseModel):
@@ -23,7 +29,7 @@ class PedidoResponse(PedidoBase):
 
 
 class PedidoCreateCompleto(BaseModel):
-    id_usuario: int
+    cliente: ClienteCheckout
     itens: list[ItemPedidoCreate]
     endereco: EnderecoEntregaCreate
     pagamento: PagamentoCreate

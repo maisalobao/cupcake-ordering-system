@@ -15,3 +15,7 @@ class UsuarioResponse(UsuarioBase):
     tipo: str
 
     model_config = ConfigDict(from_attributes=True)
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    senha: str
