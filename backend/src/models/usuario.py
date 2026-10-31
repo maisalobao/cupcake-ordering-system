@@ -24,9 +24,9 @@ class Usuario(Base):
         unique=True
     )
 
-    senha: Mapped[str] = mapped_column(
-        String(255),
-        nullable=False
+    senha: Mapped[str | None] = mapped_column(
+        String(255), 
+        nullable=True
     )
 
     tipo: Mapped[str] = mapped_column(
