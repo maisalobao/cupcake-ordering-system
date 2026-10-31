@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
-import { listarProdutos, criarPedido } from './services/api'
+import {
+  listarProdutos,
+  criarPedido,
+  obterTokenAdmin,
+  sairAdmin,
+} from './services/api'
+
+import LoginAdmin from './components/LoginAdmin'
 import { useCarrinho } from './context/CarrinhoContext'
 import Catalogo from './components/Catalogo'
 import ProdutoDetalhes from './components/ProdutoDetalhes'
@@ -24,14 +31,54 @@ function App() {
 
   const [produtos, setProdutos] = useState([])
   const [produtoSelecionado, setProdutoSelecionado] = useState(null)
-  const [tela, setTela] = useState('catalogo')
+  const [tela, setTela] = useState(() => {
+    return sessionStorage.getItem('capycakes_tela') || 'catalogo'
+  })
   const [carregando, setCarregando] = useState(true)
   const [erro, setErro] = useState('')
-  const [endereco, setEndereco] = useState(null)
+  const [endereco, setEndereco] = useState(() => {
+    try {
+      return JSON.parse(sessionStorage.getItem('capycakes_endereco')) || null
+    } catch {
+      return null
+    }
+  })
+  const [cliente, setCliente] = useState(() => {
+    try {
+      return JSON.parse(sessionStorage.getItem('capycakes_cliente')) || null
+    } catch {
+      return null
+    }
+  })
   const [pagamento, setFormaPagamento] = useState(null)
   const [pedidoCriado, setPedidoCriado] = useState(null)
   const [pedidoSelecionado, setPedidoSelecionado] = useState(null)
   const [produtoEmEdicao, setProdutoEmEdicao] = useState(null)
+  const [adminAutenticado, setAdminAutenticado] = useState(
+  Boolean(obterTokenAdmin())
+)
+
+const [adminUsuario, setAdminUsuario] = useState(null)
+
+  useEffect(() => {
+  sessionStorage.setItem('capycakes_tela', tela)
+}, [tela])
+
+  useEffect(() => {
+    if (cliente) {
+      sessionStorage.setItem('capycakes_cliente', JSON.stringify(cliente))
+    } else {
+      sessionStorage.removeItem('capycakes_cliente')
+    }
+  }, [cliente])
+
+  useEffect(() => {
+    if (endereco) {
+      sessionStorage.setItem('capycakes_endereco', JSON.stringify(endereco))
+    } else {
+      sessionStorage.removeItem('capycakes_endereco')
+    }
+  }, [endereco])
 
   useEffect(() => {
     async function carregarProdutos() {
@@ -64,7 +111,10 @@ function App() {
   async function confirmarPedido(formaPagamentoSelecionada) {
     try {
       const pedido = {
-        id_usuario: 4,
+        cliente: {
+          nome: cliente.nome,
+          email: cliente.email,
+        },
 
         itens: itens.map((item) => ({
           id_produto: item.id_produto,
@@ -121,6 +171,21 @@ function App() {
     setTela('produtos-admin')
   }
 
+  function entrarAdmin(usuario) {
+    setAdminUsuario(usuario)
+    setAdminAutenticado(true)
+    setProdutoSelecionado(null)
+    setTela('pedidos-admin')
+  }
+
+  function encerrarSessaoAdmin() {
+    sairAdmin()
+    setAdminUsuario(null)
+    setAdminAutenticado(false)
+    setProdutoSelecionado(null)
+    setTela('catalogo')
+  }
+
   return (
     <div className="app">
       
@@ -140,16 +205,14 @@ function App() {
     </div>
   </div>
 
-  <button
-    type="button"
-    className="botao-administracao"
-    onClick={() => {
-      setTela('pedidos-admin')
-      setProdutoSelecionado(null)
-    }}
-  >
-    Administração
-  </button>
+  {adminAutenticado && (
+    <button
+      type="button"
+      onClick={encerrarSessaoAdmin}
+    >
+      Sair
+    </button>
+  )}
         </header>
         
         <nav className="menu-inferior">
@@ -194,6 +257,13 @@ function App() {
         </nav>
       
       <main>
+        {tela === 'login-admin' && (
+          <LoginAdmin
+            onLogin={entrarAdmin}
+            onVoltar={() => setTela('catalogo')}
+          />
+        )}
+
         {carregando && <p>Carregando produtos...</p>}
 
         {erro && <p>{erro}</p>}
@@ -226,8 +296,9 @@ function App() {
           !erro &&
           tela === 'endereco' && (
             <EnderecoEntrega
-              onContinuar={(dadosEndereco) => {
-                setEndereco(dadosEndereco)
+              onContinuar={(dados) => {
+                setCliente(dados.cliente)
+                setEndereco(dados.endereco)
                 setTela('revisao')
               }}
             />
@@ -282,6 +353,7 @@ function App() {
 
           {!carregando &&
             !erro &&
+            adminAutenticado &&
             tela === 'pedidos-admin' && (
               <PedidosAdmin
                 onVerDetalhes={abrirDetalhesPedido}
@@ -289,7 +361,10 @@ function App() {
               />
             )}
 
-          {!carregando && !erro && tela === 'produtos-admin' && (
+          {!carregando && 
+            !erro && 
+            adminAutenticado && 
+            tela === 'produtos-admin' && (
             <ProdutosAdmin
               onEditar={abrirEdicaoProduto}
               onCriarProduto={abrirCriacaoProduto}
@@ -299,6 +374,7 @@ function App() {
 
           {!carregando &&
             !erro &&
+            adminAutenticado &&
             tela === 'detalhes-pedido-admin' &&
             pedidoSelecionado && (
               <DetalhesPedidoAdmin
@@ -308,6 +384,7 @@ function App() {
             )}
 
           {!carregando && !erro &&
+            adminAutenticado &&
             (tela === 'criar-produto' || tela === 'editar-produto') && (
               <CriarProduto
                 produtoParaEditar={
@@ -317,6 +394,20 @@ function App() {
                 onProdutoAtualizado={voltarParaProdutosAdmin}
               />
           )}
+          <footer className="rodape">
+            <p>© 2026 Capycakes · Feito com carinho 🧁</p>
+
+            <button
+              type="button"
+              className="link-admin"
+              onClick={() => {
+                setTela(adminAutenticado ? 'pedidos-admin' : 'login-admin')
+                setProdutoSelecionado(null)
+              }}
+            >
+              Área administrativa
+            </button>
+          </footer>
       </main>
     </div>
   )
