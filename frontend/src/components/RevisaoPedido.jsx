@@ -56,7 +56,7 @@ function RevisaoPedido({ endereco, onVoltar, onContinuar }) {
 
       <p>CEP: {endereco.cep}</p>
 
-      <div>
+      <div className="revisao-acoes">
         <button
           type="button"
           onClick={onVoltar}

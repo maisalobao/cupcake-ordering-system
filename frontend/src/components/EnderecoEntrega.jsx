@@ -2,6 +2,11 @@
 import { useState } from 'react'
 
 function EnderecoEntrega({ onContinuar }) {
+  const [cliente, setCliente] = useState({
+    nome: '',
+    email: '',
+  })
+
   const [endereco, setEndereco] = useState({
     logradouro: '',
     numero: '',
@@ -11,6 +16,15 @@ function EnderecoEntrega({ onContinuar }) {
     estado: '',
     cep: '',
   })
+
+  function alterarCliente(event) {
+    const { name, value } = event.target
+
+    setCliente((clienteAtual) => ({
+      ...clienteAtual,
+      [name]: value,
+    }))
+  }
 
   function alterarCampo(event) {
     const { name, value } = event.target
@@ -22,7 +36,10 @@ function EnderecoEntrega({ onContinuar }) {
     }
 
     if (name === 'estado') {
-      valorFormatado = value.replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase()
+      valorFormatado = value
+        .replace(/[^a-zA-Z]/g, '')
+        .slice(0, 2)
+        .toUpperCase()
     }
 
     setEndereco((enderecoAtual) => ({
@@ -33,17 +50,59 @@ function EnderecoEntrega({ onContinuar }) {
 
   function enviarFormulario(event) {
     event.preventDefault()
-    onContinuar(endereco)
+
+    onContinuar({
+      cliente: {
+        nome: cliente.nome.trim(),
+        email: cliente.email.trim().toLowerCase(),
+      },
+      endereco,
+    })
   }
 
   return (
     <section className="endereco-entrega">
       <div className="entrega-cabecalho">
-        <h2>Dados de entrega 📍</h2>
-        <p>Informe o endereço onde seu pedido deverá ser entregue.</p>
+        <h2>Seus dados</h2>
+        <p>Informe seus dados para identificarmos seu pedido.</p>
       </div>
 
       <form onSubmit={enviarFormulario}>
+        <div className="formulario-entrega">
+          <label className="campo-logradouro">
+            Nome completo
+            <input
+              type="text"
+              name="nome"
+              value={cliente.nome}
+              onChange={alterarCliente}
+              placeholder="Seu nome"
+              autoComplete="name"
+              maxLength={100}
+              required
+            />
+          </label>
+
+          <label className="campo-logradouro">
+            E-mail
+            <input
+              type="email"
+              name="email"
+              value={cliente.email}
+              onChange={alterarCliente}
+              placeholder="seu@email.com"
+              autoComplete="email"
+              maxLength={150}
+              required
+            />
+          </label>
+        </div>
+
+        <div className="entrega-cabecalho">
+          <h2>Dados de entrega 📍</h2>
+          <p>Informe o endereço onde seu pedido deverá ser entregue.</p>
+        </div>
+
         <div className="formulario-entrega">
           <label className="campo-logradouro">
             Endereço

@@ -18,16 +18,21 @@ function ProdutoCard({ produto, onVerDetalhes }) {
   return (
     <div className="produto">
       {produto.imagem_url && (
-        <img
-          src={produto.imagem_url}
-          alt={produto.nome}
-          className="produto-imagem"
-        />
+        <button
+          type="button"
+          className="produto-imagem-botao"
+          onClick={() => onVerDetalhes(produto)}
+          aria-label={`Ver detalhes de ${produto.nome}`}
+        >
+          <img
+            src={produto.imagem_url}
+            alt={produto.nome}
+            className="produto-imagem"
+          />
+        </button>
       )}
 
       <h3>{produto.nome}</h3>
-
-      <p>{produto.descricao}</p>
 
       <strong>
         R$ {Number(produto.preco).toFixed(2)}

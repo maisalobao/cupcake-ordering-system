@@ -55,7 +55,7 @@ function Pagamento({ onVoltar, onContinuar }) {
           Dinheiro
         </label>
 
-        <div>
+        <div className="pagamento-acoes">
           <button
             type="button"
             onClick={onVoltar}
